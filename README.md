@@ -1,36 +1,40 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# OfferTrail - Job Application Tracker
 
-## Getting Started
+A full-stack, containerized web application designed to streamline the job search process. It allows users to track application statuses, manage multiple resume PDFs, and keep interview notes organized in one secure platform.
 
-First, run the development server:
+## 🛠️ Tech Stack & Architecture
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+* **Frontend:** Next.js (App Router), React, Tailwind CSS, TypeScript
+* **Backend:** Next.js Server Actions, Next.js Middleware, Node.js
+* **Database:** PostgreSQL (hosted on Supabase)
+* **ORM:** Prisma
+* **Storage:** Supabase Storage (for secure PDF resume management)
+* **Authentication:** Custom JWT-based Auth with HTTP-only cookies
+* **DevOps:** Docker, PgBouncer (Connection Pooling)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## ✨ Key Features
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+* **Secure Authentication:** Custom-built login and session management using JSON Web Tokens (JWT) and Next.js Edge Middleware to protect private routes.
+* **Relational Data Modeling:** Strict database schemas linking users, job applications, and specific resume versions using Prisma.
+* **Document Management:** Upload, delete, and manage PDF resumes using Supabase Storage with strict Row Level Security (RLS).
+* **Containerized Environment:** Fully dockerized for consistent local development and production deployment, handling native dependencies and IPv4/IPv6 networking constraints seamlessly.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🚀 Local Development (Docker)
 
-## Learn More
+To run this application locally, you must have [Docker](https://www.docker.com/) installed. The application is entirely containerized, meaning you do not need Node.js or PostgreSQL installed on your host machine.
 
-To learn more about Next.js, take a look at the following resources:
+### 1. Environment Variables
+Create a `.env` file in the root directory (this file is ignored by Git). You will need your Supabase keys and a secret for your tokens:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```env
+# Database (Use the Supabase Transaction Pooler URL - Port 6543)
+DATABASE_URL="postgres://postgres.[YOUR-ID]:[YOUR-PASSWORD]@aws-0-us-east-1.pooler.supabase.com:6543/postgres?pgbouncer=true"
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# Authentication
+JWT_SECRET="your_secure_random_string"
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+# Storage
+NEXT_PUBLIC_SUPABASE_URL="https://[YOUR-ID].supabase.co"
+NEXT_PUBLIC_SUPABASE_ANON_KEY="your_anon_key"
+SUPABASE_SERVICE_ROLE_KEY="your_service_role_key"
+SUPABASE_BUCKET_NAME="resumes"
