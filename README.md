@@ -12,7 +12,7 @@ A full-stack, containerized web application designed to streamline the job searc
 * **Authentication:** Custom JWT-based Auth with HTTP-only cookies
 * **DevOps:** Docker, PgBouncer (Connection Pooling)
 
-## ✨ Key Features
+## Key Features
 
 * **Secure Authentication:** Custom-built login and session management using JSON Web Tokens (JWT) and Next.js Edge Middleware to protect private routes.
 * **Relational Data Modeling:** Strict database schemas linking users, job applications, and specific resume versions using Prisma.
