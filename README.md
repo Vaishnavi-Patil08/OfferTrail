@@ -2,7 +2,7 @@
 
 A full-stack, containerized web application designed to streamline the job search process. It allows users to track application statuses, manage multiple resume PDFs, and keep interview notes organized in one secure platform.
 
-## 🛠️ Tech Stack & Architecture
+## Tech Stack & Architecture
 
 * **Frontend:** Next.js (App Router), React, Tailwind CSS, TypeScript
 * **Backend:** Next.js Server Actions, Next.js Middleware, Node.js
@@ -19,7 +19,7 @@ A full-stack, containerized web application designed to streamline the job searc
 * **Document Management:** Upload, delete, and manage PDF resumes using Supabase Storage with strict Row Level Security (RLS).
 * **Containerized Environment:** Fully dockerized for consistent local development and production deployment, handling native dependencies and IPv4/IPv6 networking constraints seamlessly.
 
-## 🚀 Local Development (Docker)
+## Local Development (Docker)
 
 To run this application locally, you must have [Docker](https://www.docker.com/) installed. The application is entirely containerized, meaning you do not need Node.js or PostgreSQL installed on your host machine.
 
