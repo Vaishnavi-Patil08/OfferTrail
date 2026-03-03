@@ -1,0 +1,64 @@
+name: Deploy to AWS EC2
+
+on:
+  push:
+    branches:
+      - main 
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-2
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build, tag, and push image to Amazon ECR
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: vaishnavi-offertrail
+          IMAGE_TAG: latest
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+
+      - name: SSH into EC2 and Deploy
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            # 1. Log into AWS ECR on the server
+            aws ecr get-login-password --region us-east-2 | sudo docker login --username AWS --password-stdin 083807628853.dkr.ecr.us-east-2.amazonaws.com
+
+            
+            # 2. Pull the newly built image
+            sudo docker pull 083807628853.dkr.ecr.us-east-2.amazonaws.com/vaishnavi-offertrail:latest
+            
+            # 3. Stop and remove the old container gracefully
+            sudo docker stop offer-trail-live || true
+            sudo docker rm offer-trail-live || true
+            
+            # 4. Run the new container with GitHub Secrets securely injected
+            sudo docker run -d -p 3000:3000 \
+              --name offer-trail-live \
+              --restart unless-stopped \
+              -e DATABASE_URL='${{ secrets.DATABASE_URL }}' \
+              -e JWT_SECRET='${{ secrets.JWT_SECRET }}' \
+              -e NEXT_PUBLIC_SUPABASE_URL='${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}' \
+              -e NEXT_PUBLIC_SUPABASE_ANON_KEY='${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}' \
+              -e SUPABASE_SERVICE_ROLE_KEY='${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}' \
+              -e SUPABASE_BUCKET_NAME='resumes' \
+              083807628853.dkr.ecr.us-east-2.amazonaws.com/vaishnavi-offertrail:latest
