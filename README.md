@@ -5,7 +5,7 @@ A full-stack, containerized web application designed to streamline the job searc
 You can access the live application here: https://offertrail.duckdns.org/ 
 
 
-##  Motivation
+###  Motivation
 
 OfferTrail was built to solve a real problem experienced during daily job applications.
 
