@@ -2,6 +2,27 @@
 
 A full-stack, containerized web application designed to streamline the job search process. It allows users to track application statuses, manage multiple resume PDFs, and keep interview notes organized in one secure platform.
 
+You can access the live application here: https://offertrail.duckdns.org/ 
+
+
+##  Motivation
+
+OfferTrail was built to solve a real problem experienced during daily job applications.
+
+When applying to multiple jobs, it becomes difficult to track:
+* Which version of a resume was submitted  
+* Which cover letter was used  
+* The original job description for reference during interviews  
+* Questions asked on the application
+
+This problem was personally experienced while applying to jobs along with friends, where applications were submitted frequently but lacked proper organization for future follow-ups.
+
+OfferTrail was created as a simple solution to this workflow. Users can upload and store:
+* Resume versions  
+* Cover letters  
+* Job descriptions  
+* Application questions and their corresponding answers  
+
 ### Tech Stack & Architecture
 * **Frontend:** Next.js (App Router), React, Tailwind CSS, TypeScript
 * **Backend:** Next.js Server Actions, Next.js Middleware, Node.js
